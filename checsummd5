@@ -1,0 +1,18 @@
+import com.sterlingcommerce.woodstock.workflow.Document;
+import java.io.InputStream;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import org.apache.commons.codec.digest.DigestUtils;
+String digest = null;
+Document document = new Document();
+Document srcDoc = wfc.getPrimaryDocument();
+InputStream is = srcDoc.getInputStream();
+try{
+  digest = DigestUtils.md5Hex(is);
+}catch (Exception ex) {
+ wfc.addWFContent("CheckSumError",ex.getMessage());
+ throw new Exception("ERROR: "+ ex.getMessage() );
+}
+wfc.setBasicStatus(000);
+wfc.addWFContent("CheckSum",digest.toString());
+return "000";
